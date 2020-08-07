@@ -14,15 +14,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final Map<int, Widget> children = const <int, Widget>{
     0 : Text('Simple BLoC'),
     1 : Text('RxDart'),
-    //2 : Text('flutter_bloc'),
   };
 
   final Map<int, Widget> bloc_pages = <int, Widget>{
     0 : HomePage(),
     1 : HomePageRxDart(),
-    /*2 : Center(
-        child: Text('flutter_bloc')
-    )*/
   };
 
   int currentSegment = 0;
