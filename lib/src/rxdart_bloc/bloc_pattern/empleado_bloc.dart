@@ -7,11 +7,15 @@ class EmpleadoBloc{
 
   final _repository = Repository();
   final _empleadoFetcher = PublishSubject<List<Empleado>>();
-  Stream<List<Empleado>> get allEmpleados => _empleadoFetcher.stream;
+  final _counterFetcher = PublishSubject<int>();
+
+  Stream<List<Empleado>> get streamEmpleados => _empleadoFetcher.stream;
+  Stream<int> get streamCounter => _counterFetcher.stream;
 
   fetchAllEmpleados() async {
     _empleadoList = await _repository.fetchAllEmpleados();
     _empleadoFetcher.sink.add(_empleadoList);
+    _counterFetcher.sink.add(_empleadoList.length);
   }
 
   incrementSalario(Empleado empleado){
@@ -28,6 +32,7 @@ class EmpleadoBloc{
 
   dispose(){
     _empleadoFetcher.close();
+    _counterFetcher.close();
   }
 
 }

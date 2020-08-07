@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:test_bloc/src/simple_bloc/models/empleado.dart';
 
 class EmpleadoBloc{
+
   List<Empleado> _empleadoList = [
     Empleado(1,'Rubensin',15000.0),
     Empleado(2,'Edgar',25000.0),
@@ -11,20 +12,43 @@ class EmpleadoBloc{
     Empleado(5,'Luis',11000.0),
   ];
 
+  /*Stream<List<Empleado>> get getEmpleados async*{
+    final List<Empleado> empleados = [];
+    for (var empleado in _empleadoList) {
+      await Future.delayed(Duration(seconds: 2));
+      empleados.add(empleado);
+      yield empleados;
+    }
+  }*/
+
+
+  List<Empleado> empleados;
   final _listaStreamController = StreamController<List<Empleado>>();
-  //final _salarioIncrementStreamController = StreamController<Empleado>();
-  //final _salarioDecrementStreamController = StreamController<Empleado>();
+  final _counterStreamController = StreamController<int>();
 
   Stream <List<Empleado>> get listaStream => _listaStreamController.stream;
   StreamSink <List<Empleado>> get listaSink => _listaStreamController.sink;
 
-  /*StreamSink <Empleado> get salarioIncrement => _salarioIncrementStreamController.sink;
-  StreamSink <Empleado> get salarioDecrement => _salarioDecrementStreamController.sink;*/
+  Stream <int> get streamnCounter => _counterStreamController.stream;
 
   EmpleadoBloc(){
-    _listaStreamController.add(_empleadoList);
-    //_salarioIncrementStreamController.stream.listen(_incrementSalario);
-    //_salarioDecrementStreamController.stream.listen(_decrementSalario);
+    fetchAllEmpleados();
+  }
+
+  fetchAllEmpleados() async {
+    empleados = await empleadosList();
+    _listaStreamController.add(empleados);
+    _counterStreamController.add(empleados.length);
+  }
+
+  Future<List<Empleado>> empleadosList() async {
+    
+    final List<Empleado> empleados = [];
+    for (var empleado in _empleadoList) {
+      await Future.delayed(Duration(seconds: 1));
+      empleados.add(empleado);
+    }
+    return empleados; 
   }
 
   incrementSalario(Empleado empleado){
@@ -41,8 +65,6 @@ class EmpleadoBloc{
 
   void dispose(){
     _listaStreamController.close();
-    //_salarioIncrementStreamController.close();
-    //_salarioDecrementStreamController.close();
-
+    _counterStreamController.close();
   }
 }

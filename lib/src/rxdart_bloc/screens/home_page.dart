@@ -12,9 +12,17 @@ class HomePageRxDart extends StatelessWidget {
     _empleadoBloc.fetchAllEmpleados();
     return Material(
       child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: StreamBuilder(
+            stream: _empleadoBloc.streamCounter ,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+              return Text('${snapshot.data ?? 0} Empleados');
+            },
+          ),
+        ),
         child: Container(
           child: StreamBuilder<List<Empleado>>(
-            stream: _empleadoBloc.allEmpleados,
+            stream: _empleadoBloc.streamEmpleados,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Empleado>> snapshot) {
               return ListView.builder(

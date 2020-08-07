@@ -16,6 +16,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Material(
       child: CupertinoPageScaffold(
+         navigationBar: CupertinoNavigationBar(
+          middle: StreamBuilder(
+            stream: _empleadoBloc.streamnCounter,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+              return Text('${snapshot.data ?? 0} Empleados');
+            },
+          ),
+        ),
         child: Container(
           child: StreamBuilder<List<Empleado>>(
             stream: _empleadoBloc.listaStream,
@@ -67,9 +75,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(CupertinoIcons.up_arrow),
                             color: Colors.green,
                             onPressed: () {
-                              //_empleadoBloc.salarioIncrement.add(snapshot.data[index]);
-                              _empleadoBloc
-                                  .incrementSalario(snapshot.data[index]);
+                              _empleadoBloc.incrementSalario(snapshot.data[index]);
                             },
                           ),
                         ),
@@ -78,9 +84,7 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(CupertinoIcons.down_arrow),
                             color: Colors.red,
                             onPressed: () {
-                              //_empleadoBloc.salarioDecrement.add(snapshot.data[index]);
-                              _empleadoBloc
-                                  .decrementSalario(snapshot.data[index]);
+                              _empleadoBloc.decrementSalario(snapshot.data[index]);
                             },
                           ),
                         )
